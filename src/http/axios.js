@@ -45,7 +45,7 @@ export default function $axios(options) {   // 模板默认导出一个 Promise 
                 }
             } else {
                 return config
-            }          
+            }
         },
         error => {
             // 请求错误时
@@ -92,11 +92,11 @@ export default function $axios(options) {   // 模板默认导出一个 Promise 
                         // console.log('登入成功')
                     default:
                 }
-               // 若不是正确的返回code，且已经登入，就抛出错误
-                const err = new Error(data.desc)
-                err.data = data
-                err.response = response
-                throw err
+                // 若不是正确的返回code，且已经登入，就抛出错误
+                // const err = new Error(data.desc)
+                // err.data = data
+                // err.response = response
+                // throw err
                 return data
         },
         (err) => {

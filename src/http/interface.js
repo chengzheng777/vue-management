@@ -6,11 +6,12 @@ import axios from './axios';
  */
 
 // 单独导出
-export const login = (data) => {
+export const login = data => {
     return axios({
         url: '/login',
         method: 'post',
         data
+        
     })
 };
 
