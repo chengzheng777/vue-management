@@ -43,9 +43,8 @@ export default function $axios(options) {   // 模板默认导出一个 Promise 
                 } else {
                     config.data = qs.stringify(config.data)
                 }
-            } else {
-                return config
             }
+            return config       // if() {} 大括号里面的执行完，继续执行大括号后面的时候不加 else {}
         },
         error => {
             // 请求错误时
@@ -64,9 +63,8 @@ export default function $axios(options) {   // 模板默认导出一个 Promise 
                 router.push({
                     path: `/error/${errorStatus}`
                 })
-            } else {
-                return Promise.reject(error);   // 在调用的那边可以拿到(catch)你想返回的错误信息
             }
+            return Promise.reject(error);   // 在调用的那边可以拿到(catch)你想返回的错误信息
         }
         );
 
@@ -137,10 +135,9 @@ export default function $axios(options) {   // 模板默认导出一个 Promise 
                         break;
                     default:
                 }
-            } else {
-                console.error(err)
-                return Promise.reject(err)  // 返回接口返回的错误信息
             }
+            console.error(err)
+            return Promise.reject(err)  // 返回接口返回的错误信息
         }
         );
 
