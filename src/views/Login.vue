@@ -50,7 +50,7 @@
         methods: {
             login() {
                 let userInfo = { account: this.loginForm.account, password: this.loginForm.password };  // 提取本地账号密码
-                this.$api.login(JSON.stringify(userInfo)).then((res) => {       // 传递给后台本地账号密码返回 token ，现在是没有验证账号密码过程的
+                this.$api.login.login(JSON.stringify(userInfo)).then((res) => {       // 传递给后台本地账号密码返回 token ，现在是没有验证账号密码过程的
                     alert(res.data.token)
                     Cookies.set('token', res.data.token);    // 放置token到Cookie
                     sessionStorage.setItem('user', userInfo.account);   // 保存用户到本地会话
