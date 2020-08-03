@@ -3,9 +3,16 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {}
-});
+//  引入
+import AppStore from './modules/AppStore';
+
+// 注册模块
+const store = new Vuex.Store({
+    modules: {
+        app: AppStore
+        // 其它
+    }
+})
+
+// 导出
+export default store;

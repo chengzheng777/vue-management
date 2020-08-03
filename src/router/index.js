@@ -13,7 +13,7 @@ const routes = [
         { path: '', name: '系统介绍', component: () => import ("@/views/Intro") },
         { path: '/user', name: '用户管理', component: () => import ("@/views/SysMng/User") },
         { path: '/dept', name: '系统介绍', component: () => import ("@/views/SysMng/Dept") },
-        { path: '/role', name: '系统介绍', component: () => import ("@/views/SysMng/Role") },
+        { path: '/role', name: '角色管理', component: () => import ("@/views/SysMng/Role") },
         { path: '/menu', name: '菜单管理', component: () => import ("@/views/SysMng/Menu") },
         { path: '/log', name: '系统介绍', component: () => import ("@/views/SysMng/Log") },
     ]

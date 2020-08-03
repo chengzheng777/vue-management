@@ -1,9 +1,8 @@
 <template> 
-    <div class="header-container">
-        <!-- 导航菜单隐藏显示切换 -->
-        <!-- icon @click.prevent: 阻止默认行为 -->
-        <span class="collapse-switcher" @click.prevent="collapse">
-        <i class="el-icon-menu"></i>
+    <div class="header-container" :class="this.$store.state.app.collapse?'menu-bar-collapse-width':'menu-bar-width'">
+        <!-- 导航收缩 -->
+        <span class="hamburger-container">
+            <Hamburger :toggleClick="collapse" :isActive="$store.state.collapse"></Hamburger>
         </span>
         <!-- 导航菜单 -->
         <span class="nav-bar">
@@ -43,46 +42,51 @@
 <script>
 import mock from "@/mock/index.js";
 
+import Hamburger from '@/components/Hamburger';
+
 export default {
-  data() {
-    return {
-      isCollapse: false,
-      username: "Louis",
-      userAvatar: "",
-      activeIndex: '1'
+    components: {
+        Hamburger
+    },
+    data() {
+        return {
+        isCollapse: false,
+        username: "Louis",
+        userAvatar: "",
+        activeIndex: '1'
+        };
+    },
+    methods: {
+        selectNavBar(key, keyPath) {
+        console.log(key, keyPath)
+        },
+        //折叠导航栏
+        collapse: function() {
+        this.$store.commit('collapse')
+        },
+        //退出登录
+        logout: function() {
+        var _this = this;
+        this.$confirm("确认退出吗?", "提示", {
+            type: "warning"
+        })
+        .then(() => {
+            sessionStorage.removeItem("user");
+            this.$router.push
+            ("/login");
+        })
+        .catch(() => {});
+        }
+    },
+    mounted() {
+        this.sysName = "I like Kitty";
+        var user = sessionStorage.getItem("user");
+        if (user) {
+        this.userName = user;
+        this.userAvatar = require("@/assets/user/user.png");
+        }
+    }
     };
-  },
-  methods: {
-    selectNavBar(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    //折叠导航栏
-    collapse: function() {
-      this.isCollapse = !this.isCollapse;
-    },
-    //退出登录
-    logout: function() {
-      var _this = this;
-      this.$confirm("确认退出吗?", "提示", {
-        type: "warning"
-      })
-      .then(() => {
-        sessionStorage.removeItem("user");
-        this.$router.push
-        ("/login");
-      })
-      .catch(() => {});
-    }
-  },
-  mounted() {
-    this.sysName = "I like Kitty";
-    var user = sessionStorage.getItem("user");
-    if (user) {
-      this.userName = user;
-      this.userAvatar = require("@/assets/user/user.png");
-    }
-  }
-};
 </script>
 
 <style scoped lang="scss">
@@ -92,13 +96,18 @@ export default {
         right: 0;
         height: 60px;
         line-height: 60px;
-        .collapse-switcher {
+        background: #4b5f6e;
+        .hamburger-container {
+            text-align:center;
             width: 40px;
             float: left;
-            cursor: pointer;
-            background: #504e6180;
-            color: #fff;
-            border: 1 solid rgba(111, 123, 131, 0.8);
+            border-color: rgba(80, 124, 133, 0.747);
+            border-left-width: 1px;
+            border-left-style: solid;
+            border-right-width: 1px;
+            border-right-style: solid;
+            color: white;
+            background: #545c64;
         }
         .nav-bar {
             margin-left: auto;
@@ -123,5 +132,11 @@ export default {
                 }
             }
         }
+    }
+    .menu-bar-width {
+        left: 200px;
+    }
+    .menu-bar-collapse-width {
+        left: 65px;
     }
 </style>

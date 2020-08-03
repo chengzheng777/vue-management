@@ -1,14 +1,14 @@
 <template>
     <div class="menu-bar-container">
         <!-- logo -->
-        <div class="logo" :class="isCollapse?'menu-bar-collapse-width':'menu-bar-width'">
-            <img :src="this.logo" /> <div>{{isCollapse?'':sysName}}</div>
+        <div class="logo" :class="this.$store.state.app.collapse?'menu-bar-collapse-width':'menu-bar-width'">
+            <img :src="this.logo" /> <div>{{this.$store.state.app.collapse?'':sysName}}</div>
         </div>
         <!-- 导航菜单 -->
         <el-menu 
                 default-active="1-1"
                 class="el-menu-vertical-demo"
-                :collapse="isCollapse"
+                :collapse="this.$store.state.app.collapse"
                 @open="handleopen"
                 @close="handleclose"
                 @select="handleselect"
@@ -20,10 +20,10 @@
                     <span slot="title">系统管理</span>
                 </template>
                 <el-menu-item index="1-1" @click="$router.push('user')">用户管理</el-menu-item>
-                <el-menu-item index="1-2" @click="$router.push('dept')">dept</el-menu-item>
-                <el-menu-item index="1-3" @click="$router.push('role')">role</el-menu-item>
+                <el-menu-item index="1-2" @click="$router.push('dept')">机构管理</el-menu-item>
+                <el-menu-item index="1-3" @click="$router.push('role')">角色管理</el-menu-item>
                 <el-menu-item index="1-4" @click="$router.push('menu')">菜单管理</el-menu-item>
-                <el-menu-item index="1-5" @click="$router.push('log')">log</el-menu-item>
+                <el-menu-item index="1-5" @click="$router.push('log')">历史管理</el-menu-item>
             </el-submenu>
             <el-submenu index="2">
                 <template slot="title">
