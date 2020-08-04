@@ -6,7 +6,7 @@
     </template>
     <MenuTree v-for="item in menu.children" :key="item.menuId" :menu="item"></MenuTree>
   </el-submenu>
-  <el-menu-item v-else :index="menu.menuId + '' " @click="$router.push(menu.url)">
+  <el-menu-item v-else :index="menu.menuId + ''" @click="handleRoute(menu)">
     <i :class="menu.icon"></i>
     <span slot="title">{{menu.name}}</span>
   </el-menu-item>
@@ -22,11 +22,11 @@
       }
     },
     methods: {
-    //   handleRoute (menu) {
-    //     // 通过菜单URL跳转至指定路由
-    //     this.$router.push("/")
-    //     this.$router.push(menu.url)
-    //   }
+      handleRoute (menu) {
+        // 通过菜单URL跳转至指定路由
+        this.$router.push("/")
+        this.$router.push(menu.url)
+      }
     }
   }
 </script>

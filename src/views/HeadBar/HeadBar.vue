@@ -13,7 +13,7 @@
                 text-color="#fff"
                 active-text-color="#ffd04b"
                 mode="horizontal"
-                @select="handleSelectHearNavBar"
+               
             >
                 <!-- index 唯一标志 默认值 null -->
                 <el-menu-item index="1" @click="$router.push('/')">首页</el-menu-item>

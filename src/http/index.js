@@ -4,11 +4,11 @@
 import apis from './api';
 
 const install = Vue => {        // install：安装
-    if (install.installed) {
+    if (install.installed)
         return;
-    } else {
-        install.installed = true;
-    };
+    
+    install.installed = true;
+    
 
     Object.defineProperties(Vue.prototype, {
         // 此处挂载在 Vue 原型的 $api 对象上
