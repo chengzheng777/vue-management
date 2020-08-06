@@ -17,7 +17,7 @@
         </el-form-item>
         <!-- <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox> -->
         <el-form-item style="width: 100%;">
-            <el-button type="primary" style="width: 48%;" @click.native.prevent="reset">重 置</el-button>
+            <el-button type="primary" style="width: 48%;" @click="resetForm('loginForm')">重 置</el-button>
             <el-button type="primary" style="width: 48%;" @click.native.prevent="login" :loading="logining">登 入</el-button>
         </el-form-item>
     </el-form>
@@ -51,16 +51,24 @@
             login() {
                 let userInfo = { account: this.loginForm.account, password: this.loginForm.password };  // 提取本地账号密码
                 this.$api.login.login(JSON.stringify(userInfo)).then((res) => {       // 传递给后台本地账号密码返回 token ，现在是没有验证账号密码过程的
-                    alert(res.data.token)
+                    console.log(res.data)
+                    console.log('login')
                     Cookies.set('token', res.data.token);    // 放置token到Cookie
                     sessionStorage.setItem('user', userInfo.account);   // 保存用户到本地会话
+                    // axios 做网络请求的时候，会遇到this 不指向 vue 。而为 undefined。因为 router 是挂载在 vue 实例上的。
+                    // 可以用 window.location.href() 转跳？ 
+                    // 或者在 then（） 使用 箭头函数。ES6中的箭头函数内部的 this 属于词法作用域，由上下文（外层调用者vue 来确定）
                     this.$router.push('/');     // 登入成功，转跳到主页
                 }).catch((res) => {
-                    alert(res);
+                    this.$message({
+						message: res.message,
+						type: 'error'
+					})
                 })
             },
-            reset() {
-                this.$refs.loginForm.resetFields();
+            resetForm(formName) {
+                // resetFields： 对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
+                this.$refs[formName].resetFields();
             }
         }
     }

@@ -1,4 +1,5 @@
 // 将 axios 封装成插件， 挂载到Vue上，然后就可以按插件方式引入
+// 此时还需要在 main.js 里面引入
 
 // 导入所有接口
 import apis from './api';

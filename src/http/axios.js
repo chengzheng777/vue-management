@@ -1,6 +1,10 @@
 // 二次封装 axios 模块，包含拦截器等信息
 import axios from 'axios';
 import config from './config';
+// 不知道 qs 是什么？
+// 传递参数需要将参数序列化才行，qs有两个方法：
+// qs.parse() : 将URL解析成为对象
+// qs.stringify() ：将对象序列化成 URL，以&进行拼接
 import qs from 'qs';
 import Cookies from 'js-cookie';
 import router from '@/router';
@@ -8,7 +12,9 @@ import router from '@/router';
 // 使用vuex做全局loading时使用
 // import store from '@/store'
 
-export default function $axios(options) {   // 模板默认导出一个 Promise 实例
+export default function $axios(options) {   
+    
+    // 模板默认导出一个 Promise 实例
     return new Promise ((resolve, reject) => {
         const instance = axios.create({     // axios.create() 是实例化
             baseURL: config.baseURL,
@@ -35,12 +41,13 @@ export default function $axios(options) {   // 模板默认导出一个 Promise 
             // 3.根据请求方法，序列化转来的参数，根据后端需求是否序列化
             if (config.method === 'post') {
                 if (config.data.__proto__ === FormData.prototype
-                    || config.url.endsWith('path')
+                    || config.url.endsWith('path')                  // endsWith()方法用来判断当前字符串是否是以另外一个给定的子字符串“结尾”的，根据判断结果返回 true 或 false。
                     || config.url.endsWith('mark')
                     || config.url.endsWith('patchs')
                 ) {
 
                 } else {
+                    // 序列化
                     config.data = qs.stringify(config.data)
                 }
             }
@@ -50,7 +57,7 @@ export default function $axios(options) {   // 模板默认导出一个 Promise 
             // 请求错误时
             console.log('request:', error);
             // 1.判断请求超时
-            if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
+            if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {         // indexOf() 返回error.message中第一次出现的指定值 timeout 的索引。未找到返回 -1
                 console.log('timeout请求超时')
                 // return service.request(originalRequest);  // 再重复请求一次
             };
@@ -87,7 +94,7 @@ export default function $axios(options) {   // 模板默认导出一个 Promise 
                         break;
                     case 0:
                         store.commit('changeState')
-                        // console.log('登入成功')
+                        console.log('登入成功')
                     default:
                 }
                 // 若不是正确的返回code，且已经登入，就抛出错误

@@ -54,6 +54,7 @@ router.beforeEach((to, from, next) => {
       if (!isLogin) {
         next({ path: '/login' })
       } else {
+        // 非登入页面，且用户存在
         // 加载动态菜单和路由
         addDynamicMenuAndRoutes()
         next()
@@ -78,7 +79,7 @@ function addDynamicMenuAndRoutes() {
       // 保存加载状态
       store.commit('menuRouteLoaded', true)
       // 保存菜单树
-      store.commit('setMenuTree', res.data)
+      store.commit('setNavTree', res.data)
     })
     .catch(function(res) {
       alert(res);

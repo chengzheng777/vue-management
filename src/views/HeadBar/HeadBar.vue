@@ -1,19 +1,19 @@
 <template> 
-    <div class="header-container" :class="this.$store.state.app.collapse?'menu-bar-collapse-width':'menu-bar-width'">
+    <div class="header-container" :style="{'background-color': themeColor}" :class="collapse?'menu-bar-collapse-width':'menu-bar-width'">
         <!-- 导航收缩 -->
-        <span class="hamburger-container">
-            <Hamburger :toggleClick="collapse" :isActive="$store.state.collapse"></Hamburger>
+        <span class="hamburger-container" :style="{'background-color': themeColor}">
+            <ham-burger :onClick="onCollapse" :isActive="collapse"></ham-burger>
         </span>
         <!-- 导航菜单 -->
         <span class="nav-bar">
             <el-menu
-                :default-active="activeIndex"
+                :default-active="activeIndex2"
                 class="el-menu-demo"
-                background-color="#4b5f6e;"
+                :style="{'background-color': themeColor}"
                 text-color="#fff"
                 active-text-color="#ffd04b"
                 mode="horizontal"
-               
+                @select="selectNavBar()"         
             >
                 <!-- index 唯一标志 默认值 null -->
                 <el-menu-item index="1" @click="$router.push('/')">首页</el-menu-item>
@@ -40,29 +40,39 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import mock from "@/mock/index.js";
 
-import Hamburger from '@/components/Hamburger';
+import HamBurger from '@/components/Hamburger';
 
 export default {
     components: {
-        Hamburger
+        HamBurger
     },
     data() {
         return {
         isCollapse: false,
         username: "Louis",
         userAvatar: "",
-        activeIndex: '1'
+        activeIndex2: '1'
         };
+    },
+    computed:{
+        ...mapState({
+            // 动态主题颜色
+            themeColor: state=>state.app.themeColor,
+            // 折叠
+            collapse: state=>state.app.collapse
+        })
     },
     methods: {
         selectNavBar(key, keyPath) {
         console.log(key, keyPath)
         },
         //折叠导航栏
-        collapse: function() {
-        this.$store.commit('collapse')
+        onCollapse: function() {
+            console.log('折叠');
+            this.$store.commit('onCollapse')
         },
         //退出登录
         logout: function() {
@@ -72,10 +82,11 @@ export default {
         })
         .then(() => {
             sessionStorage.removeItem("user");
-            this.$router.push
-            ("/login");
+            this.$router.push("/login");
         })
-        .catch(() => {});
+        .catch(() => {
+            alert('退出失败')
+        });
         }
     },
     mounted() {
@@ -96,7 +107,7 @@ export default {
         right: 0;
         height: 60px;
         line-height: 60px;
-        background: #4b5f6e;
+        background: #545c64;
         .hamburger-container {
             text-align:center;
             width: 40px;
@@ -113,7 +124,7 @@ export default {
             margin-left: auto;
             float: left;
             .el-menu {
-            background: #504e6180;
+            background: #545c64;
             }
         }
         .tool-bar {

@@ -2,6 +2,7 @@ export default {
     state: {
         appName: "I like Kitty",    // 应用名称
         collapse: false,   // 导航栏收缩状态
+        themeColor: "#545c64",   //主题颜色
         menuRouteLoaded:false  // 菜单和路由是否已经加载
     },
     getters: {

@@ -4,14 +4,16 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 //  引入
-import AppStore from './modules/AppStore';
-import MenuStore from './modules/Menu';
+import app from './modules/app';
+import user from './modules/user';
+import menu from './modules/Menu';
 
 // 注册模块
 const store = new Vuex.Store({
     modules: {
-        app: AppStore,
-        menu: MenuStore
+        app: app,
+        menu: menu,
+        user:user
         // 其它
     }
 })

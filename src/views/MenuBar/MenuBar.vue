@@ -8,39 +8,37 @@
     <el-menu default-active="1" :class="collapse?'menu-bar-collapse-width':'menu-bar-width'"
       :collapse="collapse" @open="handleopen" @close="handleclose" @select="handleselect">
       <!-- 导航菜单树组件，动态加载菜单 -->
-      <menu-tree v-for="item in menuTree" :key="item.menuId" :menu="item"></menu-tree>
+      <menu-tree v-for="item in navTree" :key="item.id" :menu="item"></menu-tree>
     </el-menu>
 	</div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { isURL } from '@/utils/validate'
-import MenuTree from "@/components/MenuTree/index"
-import router from "../../router/index"
+import MenuTree from "@/components/MenuTree"
 export default {
-    components:{
-            MenuTree
+  components:{
+        MenuTree
+  },
+  methods: {
+    handleopen() {
+      console.log('handleopen')
     },
-    methods: {
-        handleopen() {
-        console.log('handleopen');
-        },
-        handleclose() {
-        console.log('handleclose');
-        },
-        handleselect(a, b) {
-        console.log('handleselect');
-        },
+    handleclose() {
+      console.log('handleclose')
     },
-    computed: {
-        ...mapState({
-        appName: state=>state.app.appName,
-        themeColor: state=>state.app.themeColor,
-        collapse: state=>state.app.collapse,
-        menuTree: state=>state.menu.menuTree
-        })
+    handleselect(a, b) {
+      console.log('handleselect')
     }
+  },
+  computed: {
+    ...mapState({
+      appName: state=>state.app.appName,
+      themeColor: state=>state.app.themeColor,
+      collapse: state=>state.app.collapse,
+      navTree: state=>state.menu.navTree
+    })
+  }
 }
 </script>
 
