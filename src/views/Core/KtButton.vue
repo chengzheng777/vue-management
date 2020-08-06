@@ -44,8 +44,8 @@ export default {
        this.$emit('click', {})
     }, 
     hasPerms: function (perms) {
-    //    return hasPermission(perms) & !this.disabled
-        return 1
+       return hasPermission(perms) & !this.disabled
+        // return 1
     }
   },
   mounted() {

@@ -80,6 +80,11 @@ function addDynamicMenuAndRoutes() {
       store.commit('menuRouteLoaded', true)
       // 保存菜单树
       store.commit('setNavTree', res.data)
+    }).then(res => {
+        api.user.findPermissions({'name':userName}).then(res => {
+            // 保存用户权限标识集合
+            store.commit('setPerms', res.data)
+        })
     })
     .catch(function(res) {
       alert(res);
