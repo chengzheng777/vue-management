@@ -34,7 +34,7 @@
                 logining: false,
                 loginForm: {            // 账号，密码
                     account: 'admin',
-                    password: 'admin',
+                    password: '12345',
                 },
                 fieldRules: {           // 输入框规则 rules:表单验证规则，即 async-validator 所使用的校验规则，类型为 Object。
                     account: [
