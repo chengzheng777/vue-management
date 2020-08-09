@@ -1,12 +1,12 @@
 <template>
 	<div class="menu-bar-container">
     <!-- logo -->
-    <div class="logo" :style="{'background-color':themeColor}" :class="collapse?'menu-bar-collapse-width':'menu-bar-width'">
+    <div class="logo"  :class="collapse?'menu-bar-collapse-width':'menu-bar-width'">
         <img src="@/assets/user/logo.png"/> <div>{{collapse?'':appName}}</div>
     </div>
     <!-- 导航菜单 -->
-    <el-menu default-active="1" :class="collapse?'menu-bar-collapse-width':'menu-bar-width'"
-      :collapse="collapse" @open="handleopen" @close="handleclose" @select="handleselect">
+    <el-menu ref="navmenu" default-active="1" :class="collapse?'menu-bar-collapse-width':'menu-bar-width'"
+      :collapse="collapse" :collapse-transition="false" :unique-opened="true" @open="handleopen" @close="handleclose" @select="handleselect">
       <!-- 导航菜单树组件，动态加载菜单 -->
       <menu-tree v-for="item in navTree" :key="item.id" :menu="item"></menu-tree>
     </el-menu>
@@ -17,28 +17,66 @@
 import { mapState } from 'vuex'
 import MenuTree from "@/components/MenuTree"
 export default {
-  components:{
-        MenuTree
-  },
-  methods: {
-    handleopen() {
-      console.log('handleopen')
+    data() {
+        return {
+             
+        }
     },
-    handleclose() {
-      console.log('handleclose')
+    components:{
+            MenuTree
     },
-    handleselect(a, b) {
-      console.log('handleselect')
-    }
-  },
-  computed: {
-    ...mapState({
-      appName: state=>state.app.appName,
-      themeColor: state=>state.app.themeColor,
-      collapse: state=>state.app.collapse,
-      navTree: state=>state.menu.navTree
-    })
-  }
+    computed: {
+        ...mapState({
+        appName: state=>state.app.appName,
+        collapse: state=>state.app.collapse,
+        navTree: state=>state.menu.navTree
+        }),
+        mainTabs: {
+        get () { return this.$store.state.tab.mainTabs },
+        set (val) { this.$store.commit('updateMainTabs', val) }
+        },
+        mainTabsActiveName: {
+        get () { return this.$store.state.tab.mainTabsActiveName },
+        set (val) { this.$store.commit('updateMainTabsActiveName', val) }
+        }
+    },
+    watch: {
+        $route: 'handleRoute'
+    },
+    created () {
+        this.handleRoute(this.$route)
+    },
+    methods: {
+        handleopen() {
+        console.log('handleopen')
+        },
+        handleclose() {
+        console.log('handleclose')
+        },
+        handleselect(a, b) {
+        console.log('handleselect')
+        },
+        // 路由操作处理
+        handleRoute (route) {
+        debugger
+        // tab标签页选中, 如果不存在则先添加
+        let tab = this.mainTabs.filter(item => item.name === route.name)[0]
+        if (!tab) {
+            tab = {
+            name: route.name,
+            title: route.name,
+            icon: route.meta.icon
+            }
+            this.mainTabs = this.mainTabs.concat(tab)
+        }
+        this.mainTabsActiveName = tab.name
+        // 切换标签页时同步更新高亮菜单
+        if(this.$refs.navmenu != null) {
+            this.$refs.navmenu.activeIndex = '' + route.meta.index
+            this.$refs.navmenu.initOpenedMenu()
+        }
+        }
+    },
 }
 </script>
 

@@ -17,10 +17,12 @@ export default function $axios(options) {
     // 模板默认导出一个 Promise 实例
     return new Promise ((resolve, reject) => {
         const instance = axios.create({     // axios.create() 是实例化
-            baseURL: config.baseURL,
-            headers: {},
-            transformResponse: [function (data) {   // transformResponse 在传递给 then/catch 前，允许修改响应数据，用的不多？
-            }]
+            baseURL: config.baseUrl,
+            headers: config.headers,
+            timeout: config.timeout,
+            withCredentials: config.withCredentials
+            // transformResponse: [function (data) {   // transformResponse 在传递给 then/catch 前，允许修改响应数据，用的不多？
+            // }]
         });
         
         // request 拦截器
@@ -32,7 +34,7 @@ export default function $axios(options) {
             
             // 2.带上 token
             if (token) {
-                config.headers.accessToken = token
+                config.headers.token = token
             } else {
                 // 重定向到登入页面
                 router.push('/login')
@@ -40,16 +42,16 @@ export default function $axios(options) {
 
             // 3.根据请求方法，序列化转来的参数，根据后端需求是否序列化
             if (config.method === 'post') {
-                if (config.data.__proto__ === FormData.prototype
-                    || config.url.endsWith('path')                  // endsWith()方法用来判断当前字符串是否是以另外一个给定的子字符串“结尾”的，根据判断结果返回 true 或 false。
-                    || config.url.endsWith('mark')
-                    || config.url.endsWith('patchs')
-                ) {
+                // if (config.data.__proto__ === FormData.prototype
+                //     || config.url.endsWith('path')                  // endsWith()方法用来判断当前字符串是否是以另外一个给定的子字符串“结尾”的，根据判断结果返回 true 或 false。
+                //     || config.url.endsWith('mark')
+                //     || config.url.endsWith('patchs')
+                // ) {
 
-                } else {
-                    // 序列化
-                    config.data = qs.stringify(config.data)
-                }
+                // } else {
+                //     // 序列化
+                //     config.data = qs.stringify(config.data)
+                // }
             }
             return config       // if() {} 大括号里面的执行完，继续执行大括号后面的时候不加 else {}
         },

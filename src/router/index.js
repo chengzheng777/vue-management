@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Cookies from "js-cookie"
 
 
 // 不知为何 这里的 import 必须加。不然会报 访问地址错误的报错- -
@@ -22,7 +23,14 @@ const router = new Router({
           name: "首页",
           component: () => import ("@/views/Home"),
           children: [
-              { path: '', name: '系统介绍', component: () => import ("@/views/Intro/intro") },
+                { path: '', 
+                name: '系统介绍', 
+                component: () => import ("@/views/Intro/intro"), 
+                meta: {
+                    icon: 'fa fa-home fa-lg',
+                    index: 0
+                } 
+            },
           ]
         },
         {
@@ -41,22 +49,23 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     // 登录界面登录成功之后，会把用户信息保存在会话
     // 存在时间为会话生命周期，页面关闭即失效。
-    let isLogin = sessionStorage.getItem('user')
+    let token = Cookies.get('token')
+    let userName = sessionStorage.getItem('user')
     if (to.path === '/login') {
       // 如果是访问登录界面，如果用户会话信息存在，代表已登录过，跳转到主页
-      if(isLogin) {
+      if(token) {
         next({ path: '/' })
       } else {
         next()
       }
     } else {
       // 如果访问非登录界面，且户会话信息不存在，代表未登录，则跳转到登录界面
-      if (!isLogin) {
+      if (!token) {
         next({ path: '/login' })
       } else {
         // 非登入页面，且用户存在
         // 加载动态菜单和路由
-        addDynamicMenuAndRoutes()
+        addDynamicMenuAndRoutes(userName, to, from)
         next()
       }
     }
@@ -65,12 +74,13 @@ router.beforeEach((to, from, next) => {
   /**
 * 加载动态菜单和路由
 */
-function addDynamicMenuAndRoutes() {
+function addDynamicMenuAndRoutes(userName, to, from) {
     if(store.state.app.menuRouteLoaded) {
       console.log('动态菜单和路由已经存在.')
       return
     }
-    api.menu.findMenuTree()
+    // 这里有点问题
+    api.menu.findMenuTree({'userName':userName})
     .then( (res) => {
       // 添加动态路由
       let dynamicRoutes = addDynamicRoutes(res.data)
@@ -109,11 +119,12 @@ function addDynamicMenuAndRoutes() {
          component: null,
          name: menuList[i].name,
          meta: {
-           menuId: menuList[i].menuId,
-           title: menuList[i].name,
-           isDynamic: true,
-           isTab: true,
-           iframeUrl: ''
+            index: menuList[i].id,
+            menuId: menuList[i].menuId,
+            title: menuList[i].name,
+            isDynamic: true,
+            isTab: true,
+            iframeUrl: ''
          }
        }
        // url以http[s]://开头, 通过iframe展示

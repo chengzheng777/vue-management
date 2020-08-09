@@ -44,7 +44,7 @@
                         { required: true, message: '请输入密码', trigger: 'blur' },
                     ],
                 },
-                // checked: true
+                checked: true
             }
         },
         methods: {
@@ -55,6 +55,7 @@
                     console.log('login')
                     Cookies.set('token', res.data.token);    // 放置token到Cookie
                     sessionStorage.setItem('user', userInfo.account);   // 保存用户到本地会话
+                    this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
                     // axios 做网络请求的时候，会遇到this 不指向 vue 。而为 undefined。因为 router 是挂载在 vue 实例上的。
                     // 可以用 window.location.href() 转跳？ 
                     // 或者在 then（） 使用 箭头函数。ES6中的箭头函数内部的 this 属于词法作用域，由上下文（外层调用者vue 来确定）

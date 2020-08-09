@@ -39,10 +39,15 @@ function fnCreate (mod, isOpen = true) {
                     // 格式：Mock.mock( rurl, rtype, function( options ) )
                     //options：指向本次请求的 Ajax 选项集，含有 url、type 和 body 三个属性，参见 XMLHttpRequest 规范。
                     // url用正则写，这样get请求传参时，也能拦截数据了
-                    let baseUrl = 'http://localhost:8080/'
-                    let url = baseUrl + res.url
+                   
+                    // let url = baseUrl + res.url
                     // 这里Mock 是拦截的 baseUrl？
-                    Mock.mock(new RegExp(baseUrl), res.type, (opts) => {    // opts = {url: "http://localhost:8080/login", type: "GET", body: null, data: null}
+                    let url = 'http://localhost:8080/'
+                    // if(!url.endsWith("/")) {
+                    //   url = url + "/"
+                    // }
+                    url = url + res.url
+                    Mock.mock(new RegExp(url), res.type, (opts) => {    // opts = {url: "http://localhost:8080/login", type: "GET", body: null, data: null}
                         opts['data'] = opts.body ? JSON.parse(opts.body) : null;
                         delete opts.body;
                         console.log('\n');
