@@ -42,6 +42,7 @@
 <script>
 import { mapState } from 'vuex';
 import mock from "@/mock/index.js";
+import Cookies from "js-cookie";
 
 import HamBurger from '@/components/Hamburger';
 
@@ -81,6 +82,7 @@ export default {
             type: "warning"
         })
         .then(() => {
+            Cookies.remove('token'); 
             sessionStorage.removeItem("user");
             this.$router.push("/login");
         })
@@ -100,7 +102,7 @@ export default {
     };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped >
     .header-container {
         position: absolute;
         left: 200px;

@@ -1,10 +1,10 @@
 /* 
  * 接口统一集成模块
  */
-import * as login from './moudules/login'
-import * as user from './moudules/user'
-import * as menu from './moudules/menu'
-import * as dept from './moudules/dept'
+import * as login from './modules/login'
+import * as user from './modules/user'
+import * as menu from './modules/menu'
+import * as dept from './modules/dept'
 
 
 // 默认全部导出
